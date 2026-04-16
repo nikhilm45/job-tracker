@@ -1,11 +1,16 @@
 package com.nikhil.jobtracker.service;
 
 import com.nikhil.jobtracker.dto.DashboardResponse;
+import com.nikhil.jobtracker.dto.JobResponse;
 import com.nikhil.jobtracker.entity.Job;
+import com.nikhil.jobtracker.entity.JobStatus;
 import com.nikhil.jobtracker.entity.User;
 import com.nikhil.jobtracker.repository.JobRepository;
 import com.nikhil.jobtracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,5 +54,30 @@ public class JobService {
             }
         }
         return new DashboardResponse(total, applied, interview, offer, rejected);
+    }
+
+    public Page<JobResponse> getJobs(User user, JobStatus status, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Job> jobPage;
+
+        if (status != null) {
+            jobPage = jobRepository.findByUserAndStatus(user, status, pageable);
+        } else {
+            jobPage = jobRepository.findByUser(user, pageable);
+        }
+
+        return jobPage.map(this::mapToResponse);
+    }
+
+    private JobResponse mapToResponse(Job job) {
+        return new JobResponse(
+                job.getId(),
+                job.getCompanyName(),
+                job.getRole(),
+                job.getStatus(),
+                job.getJobLink()
+        );
     }
 }
