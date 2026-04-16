@@ -1,10 +1,12 @@
 package com.nikhil.jobtracker.controller;
 
+import com.nikhil.jobtracker.dto.DashboardResponse;
 import com.nikhil.jobtracker.entity.Job;
 import com.nikhil.jobtracker.entity.User;
 import com.nikhil.jobtracker.service.JobService;
 import com.nikhil.jobtracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
