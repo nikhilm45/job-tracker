@@ -3,6 +3,8 @@ package com.nikhil.jobtracker.repository;
 import com.nikhil.jobtracker.entity.Job;
 import com.nikhil.jobtracker.entity.JobStatus;
 import com.nikhil.jobtracker.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +15,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     List<Job> findByUser(User user);
     List<Job> findByUserAndStatus(User user, JobStatus status);
+    Page<Job> findByUser(User user, Pageable pageable);
+    Page<Job> findByUserAndStatus(User user, JobStatus status, Pageable pageable);
 
 }
